@@ -1,0 +1,51 @@
+RewriteEngine On
+
+
+#----------------------------------------------
+# | this code use for remove public directory |
+#----------------------------------------------
+
+
+
+
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)/$ /$1 [L,R=301]
+RewriteCond %{REQUEST_URI} !(\.ico|\.css|\.js|\.png|\.jpg|\.gif|robots\.txt|\.eot|\.svg|\.ttf|\.woff|\.woff2|\.otf|\.pdf|\.mp4)$ [NC]
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^ index.php [L]
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_URI} !^/public/
+RewriteRule ^(docs|uploads|assets|css|js|images|ca|favicons|fonts|)/(.*)$ public/$1/$2 [L,NC]
+
+
+RewriteCond %{HTTP:Authorization} ^(.*)
+RewriteRule .* - [e=HTTP_AUTHORIZATION:%1]
+
+php_value max_input_time 300000
+php_value max_input_vars 300000
+php_value max_execution_time 3000
+php_value memory_limit 2G
+
+<Files .env>
+    Order allow,deny
+    Deny from all
+</Files>
+
+<Files *.log>
+    Order allow,deny
+    Deny from all
+</Files>
+
+<Files .git>
+        Order allow,deny
+        Deny from all
+    </Files>
+
+<Files .gitignore>
+        Order allow,deny
+        Deny from all
+    </Files>
+
+Options -Indexes 
