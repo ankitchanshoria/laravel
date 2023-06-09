@@ -13,6 +13,23 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('/clear-cache', function() {
+    $exitCode = Artisan::call('config:clear');
+		$exitCode = Artisan::call('cache:clear');
+		$exitCode = Artisan::call('view:clear');
+		$exitCode = Artisan::call('route:clear');
+    
+  //  $exitCode = Artisan::call('config:cache');
+    return 'DONE'; //Return anything
+});
+
 Route::get('/', function () {
     return view('welcome');
+});
+
+
+Route::group(['prefix' => 'admin', 'namespace' => 'Admin', 'middleware' => 'AdminBeforeLoggedIn'], function () {
+    
+    Route::get('/login', [\App\Http\Controllers\Admin\UserController::class, 'login'])->name('admin.login');
+    Route::post('/login', [UserController::class, 'postLogin'])->name('admin.post.login');
 });
